@@ -12,19 +12,22 @@ import { User } from 'src/user/entities/user.entity';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @ApiOperation({ summary: 'Create user' })
+  @ApiOperation({ operationId: 'createUser', summary: 'Create user' })
   @Post('register')
   createAuth(@Body() createUserDto: CreateUserDto) {
     return this.authService.createAuth(createUserDto);
   }
 
-  @ApiOperation({ summary: 'Login user' })
+  @ApiOperation({ operationId: 'loginUser', summary: 'Login user' })
   @Post('login')
   loginAuth(@Body() loginAuthDto: LoginAuthDto) {
     return this.authService.loginAuth(loginAuthDto);
   }
 
-  @ApiOperation({ summary: 'Check token expiration' })
+  @ApiOperation({
+    operationId: 'checkToken',
+    summary: 'Check token expiration',
+  })
   @ApiBearerAuth()
   @Get('check-status')
   @Auth()
