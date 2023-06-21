@@ -77,14 +77,14 @@ export class AuthService {
 
     return {
       ...user,
-      token: this.getJwtToken({ id: user.id }),
+      accessToken: this.getJwtToken({ id: user.id }),
     };
   }
 
   checkAuthStatus(user: User) {
     return {
       ...user,
-      token: this.getJwtToken({ id: user.id }),
+      accessToken: this.getJwtToken({ id: user.id }),
     };
   }
 

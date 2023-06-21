@@ -20,7 +20,7 @@ async function bootstrap() {
 
   const logger = new Logger('Bootstrap');
 
-  // app.setGlobalPrefix('v1');
+  app.setGlobalPrefix('v1');
   app.enableCors();
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   app.useGlobalPipes(
