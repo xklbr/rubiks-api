@@ -9,7 +9,7 @@ import {
 import { Observable } from 'rxjs';
 
 import { MessageHandler, MetaRoles } from 'src/common/enums';
-import { User } from 'src/user/entities/user.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class UserRoleGuard implements CanActivate {
@@ -26,7 +26,7 @@ export class UserRoleGuard implements CanActivate {
     if (validRoles.length === 0) return true;
 
     const req = context.switchToHttp().getRequest();
-    const user = req.user as User;
+    const user = req.user as UserEntity;
 
     if (!user) throw new BadRequestException(MessageHandler.USER_NOT_FOUND);
 

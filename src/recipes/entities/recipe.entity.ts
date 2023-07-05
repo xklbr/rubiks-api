@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-import { User } from 'src/user/entities/user.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
 
 @Entity({ name: 'recipes' })
 export class Recipe {
@@ -37,6 +37,6 @@ export class Recipe {
   @Column('bool', { default: true })
   status: boolean;
 
-  @ManyToOne(() => User, (user) => user.recipe, { eager: true })
-  user: User;
+  @ManyToOne(() => UserEntity, (user) => user.recipe, { eager: true })
+  user: UserEntity;
 }

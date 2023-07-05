@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { SeedModule } from './seed/seed.module';
 import { SharedModule } from './common/shared.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { SharedModule } from './common/shared.module';
     UserModule,
     SeedModule,
     SharedModule,
+    DashboardModule,
   ],
 })
 export class AppModule {}

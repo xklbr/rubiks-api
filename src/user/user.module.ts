@@ -4,15 +4,15 @@ import { PassportModule } from '@nestjs/passport';
 
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
-import { User } from './entities/user.entity';
+import { UserEntity } from './entities/user.entity';
 
 @Module({
   controllers: [UserController],
   providers: [UserService],
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([UserEntity]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
-  exports: [TypeOrmModule],
+  exports: [TypeOrmModule, UserService],
 })
 export class UserModule {}

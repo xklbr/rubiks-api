@@ -19,7 +19,7 @@ import {
 import { RecipesService } from './recipes.service';
 import { CreateRecipeDto, UpdateRecipeDto } from 'src/recipes/dto';
 import { Auth, GetUser } from 'src/auth/decorators';
-import { User } from 'src/user/entities/user.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
 import { PaginationDto } from 'src/common/dtos';
 import { ValidRoles } from 'src/common/enums';
 
@@ -36,7 +36,10 @@ export class RecipesController {
   })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   @ApiBearerAuth()
-  create(@Body() createRecipeDto: CreateRecipeDto, @GetUser() user: User) {
+  create(
+    @Body() createRecipeDto: CreateRecipeDto,
+    @GetUser() user: UserEntity,
+  ) {
     return this.recipesService.create(createRecipeDto, user);
   }
 
@@ -58,7 +61,7 @@ export class RecipesController {
   update(
     @Param('id') id: string,
     @Body() updateRecipeDto: UpdateRecipeDto,
-    @GetUser() user: User,
+    @GetUser() user: UserEntity,
   ) {
     return this.recipesService.update(id, updateRecipeDto, user);
   }

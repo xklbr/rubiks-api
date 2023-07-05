@@ -10,7 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 
 import { Recipe } from './entities';
-import { User } from 'src/user/entities/user.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
 
 import { CreateRecipeDto, UpdateRecipeDto } from 'src/recipes/dto';
 import { PaginationDto } from 'src/common/dtos';
@@ -28,7 +28,7 @@ export class RecipesService {
 
   private readonly logger = new Logger('RecipesService');
 
-  async create(createRecipeDto: CreateRecipeDto, user: User) {
+  async create(createRecipeDto: CreateRecipeDto, user: UserEntity) {
     try {
       const { ...recipeDetails } = createRecipeDto;
       const recipe = this.recipeRepository.create({
@@ -69,7 +69,7 @@ export class RecipesService {
     return recipe;
   }
 
-  async update(id: string, updateRecipeDto: UpdateRecipeDto, user: User) {
+  async update(id: string, updateRecipeDto: UpdateRecipeDto, user: UserEntity) {
     const { ...toUpdate } = updateRecipeDto;
     const recipe = await this.recipeRepository.preload({
       id,

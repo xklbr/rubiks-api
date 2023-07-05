@@ -4,52 +4,64 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   ClassSerializerInterceptor,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { UserService } from './user.service';
-import { UpdateUserDto } from 'src/user/dto';
-import { Auth } from '../auth/decorators';
-import { ValidRoles } from './../common/enums/valid.roles';
+import { UpdateUserDto, UserDto } from 'src/user/dto';
+// import { Auth } from '../auth/decorators';
+// import { ValidRoles } from './../common/enums/valid.roles';
 
-@ApiTags('user')
-@Controller('user')
+@ApiTags('users')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   // @Auth(ValidRoles.ADMIN)
-  @ApiOperation({ summary: 'Get all user' })
+  @ApiOperation({ operationId: 'listUsers', summary: 'Get all user' })
   @ApiBearerAuth()
+  @ApiOkResponse({ type: [UserDto] })
   @Get()
-  findAll() {
+  findAll(): Promise<UserDto[]> {
     return this.userService.findAll();
   }
 
-  @Auth(ValidRoles.ADMIN)
-  @ApiOperation({ summary: 'Get user by id' })
+  // @Auth(ValidRoles.ADMIN)
+  @ApiOperation({ operationId: 'retrieveUser', summary: 'Get user by id' })
   @ApiBearerAuth()
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(id);
+  findOne(@Param('id') id: string): Promise<UserDto> {
+    return this.userService.findById(id);
   }
 
-  @Auth(ValidRoles.ADMIN)
-  @ApiOperation({ summary: 'Update user' })
+  // @Auth(ValidRoles.ADMIN)
+  @ApiOperation({ operationId: 'updateUser', summary: 'Update user' })
   @ApiBearerAuth()
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiOkResponse({ type: UserDto })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<UserDto> {
     return this.userService.update(id, updateUserDto);
   }
 
-  @Auth(ValidRoles.ADMIN)
-  @ApiOperation({ summary: 'Disable user' })
+  // @Auth(ValidRoles.ADMIN)
+  @ApiOperation({ operationId: 'disabledUser', summary: 'Disable user' })
+  @ApiParam({ name: 'id', type: 'string' })
   @ApiBearerAuth()
-  @Delete(':id')
+  @Patch(':id/disable')
   @UseInterceptors(ClassSerializerInterceptor)
-  remove(@Param('id') id: string) {
-    return this.userService.remove(id);
+  patch(@Param('id') id: string): Promise<boolean> {
+    return this.userService.disable(id);
   }
 }

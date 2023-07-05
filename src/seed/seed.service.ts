@@ -14,7 +14,7 @@ import { RecipesService } from 'src/recipes/recipes.service';
 import { seedUsersData, seedStoresData, seedRecipesData } from './data';
 import { MessageHandler } from 'src/common/enums';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/user/entities/user.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class SeedService {
@@ -22,8 +22,8 @@ export class SeedService {
     private readonly storesService: StoresService,
     private readonly recipesService: RecipesService,
 
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
 
     @InjectRepository(Store)
     private readonly storeRepository: Repository<Store>,
@@ -54,7 +54,7 @@ export class SeedService {
   private async insertUsers() {
     const seedUsers = seedUsersData.users;
 
-    const users: User[] = [];
+    const users: UserEntity[] = [];
 
     seedUsers.map((user) => {
       user.password = bcrypt.hashSync(user.password, 10);
@@ -68,7 +68,7 @@ export class SeedService {
     return dbUsers[0];
   }
 
-  private async insertNewStores(user: User) {
+  private async insertNewStores(user: UserEntity) {
     await this.deleteAllStores();
     await this.deleteAllRecipes();
 
@@ -90,7 +90,7 @@ export class SeedService {
     return true;
   }
 
-  private async insertNewRecipes(user: User) {
+  private async insertNewRecipes(user: UserEntity) {
     await this.deleteAllRecipes();
 
     const recipes = seedRecipesData.recipes;

@@ -1,6 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsArray,
   IsEmail,
+  IsNotEmpty,
+  IsOptional,
   IsString,
   Matches,
   MaxLength,
@@ -18,7 +21,23 @@ export class CreateUserDto {
 
   @ApiProperty()
   @IsEmail()
+  @IsNotEmpty()
   email: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  jobTitle: string;
+
+  @ApiProperty()
+  @IsArray()
+  @IsNotEmpty()
+  roles: string[];
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  status: string;
 
   @ApiProperty()
   @IsString()

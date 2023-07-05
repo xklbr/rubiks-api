@@ -10,7 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 
 import { Store } from './entities';
-import { User } from 'src/user/entities/user.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
 
 import { CreateStoreDto, UpdateStoreDto } from 'src/stores/dto';
 import { PaginationDto } from 'src/common/dtos';
@@ -28,7 +28,7 @@ export class StoresService {
 
   private readonly logger = new Logger('StoresService');
 
-  async create(createStoreDto: CreateStoreDto, user: User) {
+  async create(createStoreDto: CreateStoreDto, user: UserEntity) {
     try {
       const { ...storeDetails } = createStoreDto;
       const store = this.storeRepository.create({
@@ -69,7 +69,7 @@ export class StoresService {
     return store;
   }
 
-  async update(id: string, updateStoreDto: UpdateStoreDto, user: User) {
+  async update(id: string, updateStoreDto: UpdateStoreDto, user: UserEntity) {
     const { ...toUpdate } = updateStoreDto;
     const store = await this.storeRepository.preload({
       id,

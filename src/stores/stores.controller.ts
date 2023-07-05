@@ -19,7 +19,7 @@ import {
 import { StoresService } from './stores.service';
 import { CreateStoreDto, UpdateStoreDto } from 'src/stores/dto';
 import { Auth, GetUser } from 'src/auth/decorators';
-import { User } from 'src/user/entities/user.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
 import { PaginationDto } from 'src/common/dtos';
 import { ValidRoles } from 'src/common/enums';
 
@@ -36,7 +36,7 @@ export class StoresController {
   })
   @ApiForbiddenResponse({ description: 'Forbidden.' })
   @ApiBearerAuth()
-  create(@Body() createStoreDto: CreateStoreDto, @GetUser() user: User) {
+  create(@Body() createStoreDto: CreateStoreDto, @GetUser() user: UserEntity) {
     return this.storesService.create(createStoreDto, user);
   }
 
@@ -58,7 +58,7 @@ export class StoresController {
   update(
     @Param('id') id: string,
     @Body() updateStoreDto: UpdateStoreDto,
-    @GetUser() user: User,
+    @GetUser() user: UserEntity,
   ) {
     return this.storesService.update(id, updateStoreDto, user);
   }

@@ -12,7 +12,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
 import { CreateUserDto } from 'src/user/dto';
-import { User } from 'src/user/entities/user.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
 import { MessageHandler } from 'src/common/enums';
 import { LoginAuthDto } from './dto';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
@@ -20,8 +20,8 @@ import { JwtPayload } from './interfaces/jwt-payload.interface';
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -81,7 +81,7 @@ export class AuthService {
     };
   }
 
-  checkAuthStatus(user: User) {
+  checkAuthStatus(user: UserEntity) {
     return {
       ...user,
       accessToken: this.getJwtToken({ id: user.id }),

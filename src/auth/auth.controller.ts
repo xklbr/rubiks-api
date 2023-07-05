@@ -5,7 +5,7 @@ import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/user/dto';
 import { LoginAuthDto } from './dto';
 import { Auth, GetUser } from './decorators';
-import { User } from 'src/user/entities/user.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -31,7 +31,7 @@ export class AuthController {
   @ApiBearerAuth()
   @Get('check-status')
   @Auth()
-  checkAuthStatus(@GetUser() user: User) {
+  checkAuthStatus(@GetUser() user: UserEntity) {
     return this.authService.checkAuthStatus(user);
   }
 }
