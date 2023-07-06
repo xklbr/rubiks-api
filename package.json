@@ -1,9 +1,6 @@
 {
   "name": "rubiks-api",
   "version": "0.0.1",
-  "engines": {
-    "node": ">=16.0.0"
-  },
   "description": "",
   "author": "",
   "private": true,
