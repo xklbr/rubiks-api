@@ -51,7 +51,7 @@ async function bootstrap() {
 
   app.enableShutdownHooks();
 
-  const port = process.env.PORT || 8080;
+  const port = process.env.PORT || 8000;
   await app.listen(port);
   logger.log(`App running on port ${port}`);
 }
