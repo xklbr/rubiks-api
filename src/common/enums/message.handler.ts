@@ -11,7 +11,7 @@ export enum MessageHandler {
   USER_NOT_FOUND = 'User not found',
   USER_INVALID_ROLE = 'User does not have permissions',
   USER_INVALID_STATUS = 'User does not have valid status',
-  USER_INACTIVE = 'User is inactive',
+  USER_DISABLED = 'User is inactive',
 
   EMAIL_ALREADY_EXIST = 'Email is all ready exist',
 

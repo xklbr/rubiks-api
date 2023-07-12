@@ -1,4 +1,6 @@
 import {
+  BeforeInsert,
+  BeforeUpdate,
   // BeforeInsert,
   // BeforeUpdate,
   Column,
@@ -39,7 +41,7 @@ export class UserEntity {
     nullable: true,
     default: ValidStatus.ACTIVE,
   })
-  status: string;
+  status?: string;
 
   // @Exclude({ toPlainOnly: true })
   @Column('text', {
@@ -47,7 +49,7 @@ export class UserEntity {
     nullable: true,
     default: [ValidRoles.USER],
   })
-  roles: string[];
+  roles?: string[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   createdAt: Date;
@@ -69,14 +71,14 @@ export class UserEntity {
   @OneToMany(() => Recipe, (recipe) => recipe.user)
   recipe: Recipe;
 
-  // @BeforeInsert()
-  // checkFieldBeforeInsert() {
-  //   this.email = this.email.toLocaleLowerCase().trim();
-  //   this.fullName = this.fullName.toLocaleLowerCase().trim();
-  // }
+  @BeforeInsert()
+  checkFieldBeforeInsert() {
+    this.email = this.email.toLocaleLowerCase().trim();
+    // this.fullName = this.fullName.toLocaleLowerCase().trim();
+  }
 
-  // @BeforeUpdate()
-  // checkFieldsBeforeUpdate() {
-  //   this.checkFieldBeforeInsert();
-  // }
+  @BeforeUpdate()
+  checkFieldsBeforeUpdate() {
+    this.checkFieldBeforeInsert();
+  }
 }

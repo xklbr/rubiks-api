@@ -12,6 +12,7 @@ import { UserModule } from './user/user.module';
 import { SeedModule } from './seed/seed.module';
 import { SharedModule } from './common/shared.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { momentTimezoneProvider } from './config/timezone/moment-timezone.provider';
 
 @Module({
   imports: [
@@ -26,5 +27,6 @@ import { DashboardModule } from './dashboard/dashboard.module';
     SharedModule,
     DashboardModule,
   ],
+  providers: [momentTimezoneProvider],
 })
 export class AppModule {}

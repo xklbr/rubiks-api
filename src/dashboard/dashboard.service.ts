@@ -6,7 +6,7 @@ import { UserService } from 'src/user/user.service';
 export class DashboardService {
   constructor(private userService: UserService) {}
 
-  async getUserByDateCreated(days: number): Promise<number> {
-    return this.userService.getTotalUserByDateCreated(days);
+  async getUserByDateCreated(): Promise<number> {
+    return this.userService.getTotalUserStatsByMonth();
   }
 }

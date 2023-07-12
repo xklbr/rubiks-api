@@ -1,6 +1,6 @@
 export enum ValidStatus {
   ACTIVE = 'Active',
   PREREGISTER = 'Preregister',
-  INACTIVE = 'Inactive',
+  DISABLED = 'Disabled',
   SUSPENDED = 'Suspended',
 }

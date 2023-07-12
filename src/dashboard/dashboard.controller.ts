@@ -14,6 +14,6 @@ export class DashboardController {
   })
   @Get()
   getUserStats() {
-    return this.dashboardService.getUserByDateCreated(30);
+    return this.dashboardService.getUserByDateCreated();
   }
 }

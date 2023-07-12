@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsArray,
   IsEmail,
@@ -15,34 +15,34 @@ import { MessageHandler } from 'src/common/enums';
 
 export class CreateUserDto {
   @ApiProperty()
-  @IsString()
   @MinLength(1)
+  @IsString()
   fullName: string;
 
   @ApiProperty()
-  @IsEmail()
   @IsNotEmpty()
+  @IsEmail()
   email: string;
 
   @ApiProperty()
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   jobTitle: string;
 
-  @ApiProperty()
-  @IsArray()
-  @IsNotEmpty()
-  roles: string[];
-
-  @ApiProperty()
-  @IsString()
+  @ApiPropertyOptional()
   @IsOptional()
-  status: string;
+  @IsArray()
+  roles?: string[];
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  status?: string;
 
   @ApiProperty()
-  @IsString()
   @MinLength(8)
   @MaxLength(50)
+  @IsString()
   @Matches(validatePassword, {
     message: MessageHandler.PASSWORD_INVALID,
   })

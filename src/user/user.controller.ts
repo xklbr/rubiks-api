@@ -6,6 +6,7 @@ import {
   Param,
   ClassSerializerInterceptor,
   UseInterceptors,
+  Post,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -16,7 +17,7 @@ import {
 } from '@nestjs/swagger';
 
 import { UserService } from './user.service';
-import { UpdateUserDto, UserDto } from 'src/user/dto';
+import { CreateUserDto, UpdateUserDto, UserDto } from 'src/user/dto';
 // import { Auth } from '../auth/decorators';
 // import { ValidRoles } from './../common/enums/valid.roles';
 
@@ -32,6 +33,14 @@ export class UserController {
   @Get()
   findAll(): Promise<UserDto[]> {
     return this.userService.findAll();
+  }
+
+  @ApiOperation({ operationId: 'newUser', summary: 'Create user' })
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: UserDto })
+  @Post()
+  async create(@Body() userDto: CreateUserDto): Promise<UserDto> {
+    return await this.userService.create(userDto);
   }
 
   // @Auth(ValidRoles.ADMIN)

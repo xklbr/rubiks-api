@@ -6,7 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { UpdateUserDto, UserDto } from './dto/index';
+import { CreateUserDto, UpdateUserDto, UserDto } from './dto/index';
 import { UserEntity } from './entities/user.entity';
 import { MessageHandler, ValidStatus } from 'src/common/enums';
 
@@ -18,7 +18,10 @@ export class UserService {
   ) {}
 
   findAll(): Promise<UserDto[]> {
-    return this.userRepository.find();
+    return this.userRepository.find({
+      where: { status: ValidStatus.ACTIVE },
+      order: { createdAt: 'DESC' },
+    });
   }
 
   async findById(id: string): Promise<UserDto> {
@@ -26,6 +29,21 @@ export class UserService {
     if (!user) throw new NotFoundException(MessageHandler.USERS_NOT_FOUND);
 
     return user;
+  }
+
+  async create(userDto: CreateUserDto): Promise<UserDto> {
+    const user = await this.userRepository.findOne({
+      where: { email: userDto.email },
+    });
+    if (user) throw new BadRequestException(MessageHandler.EMAIL_ALREADY_EXIST);
+
+    const newUser = this.userRepository.create({
+      ...userDto,
+      password: Math.random().toString(36).substring(2),
+    });
+    await this.userRepository.save(newUser);
+
+    return newUser;
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<UserDto> {
@@ -44,7 +62,7 @@ export class UserService {
     const user = await this.userRepository.findOne({ where: { id } });
 
     if (user) {
-      user.status = ValidStatus.INACTIVE;
+      user.status = ValidStatus.DISABLED;
       await this.userRepository.save(user);
 
       this.userRepository.softDelete({ id });
@@ -54,31 +72,35 @@ export class UserService {
     return false;
   }
 
-  async getTotalUserByDateCreated(days: number): Promise<any> {
-    const currentDate = new Date();
-    const startDate = new Date(
-      currentDate.getTime() - days * 24 * 60 * 60 * 1000,
-    );
+  async getTotalUserStatsByMonth(): Promise<any> {
+    const startDate = new Date();
+    startDate.setDate(1);
+    startDate.setUTCHours(0, 0, 0, 0);
+
+    const endDate = new Date();
+    endDate.setDate(endDate.getDate() - 1);
+    endDate.setUTCHours(23, 59, 0, 0);
 
     const createdLast30Days = await this.userRepository
       .createQueryBuilder('users')
       .where('created_at >= :startDate', { startDate })
-      .andWhere('created_at <= :currentDate', { currentDate })
+      .andWhere('created_at <= :endDate', { endDate })
       .andWhere('status = :status', { status: ValidStatus.ACTIVE })
       .getCount();
 
     const updatedLast30Days = await this.userRepository
       .createQueryBuilder('users')
       .where('updated_at >= :startDate', { startDate })
-      .andWhere('updated_at <= :currentDate', { currentDate })
+      .andWhere('updated_at <= :endDate', { endDate })
+      .andWhere('updated_at <> created_at')
       .andWhere('status = :status', { status: ValidStatus.ACTIVE })
       .getCount();
 
     const deletedLast30Days = await this.userRepository
       .createQueryBuilder('users')
       .where('deleted_at >= :startDate', { startDate })
-      .andWhere('deleted_at <= :currentDate', { currentDate })
-      .andWhere('status = :status', { status: ValidStatus.INACTIVE })
+      .andWhere('deleted_at <= :endDate', { endDate })
+      .andWhere('status = :status', { status: ValidStatus.DISABLED })
       .getCount();
 
     return [
